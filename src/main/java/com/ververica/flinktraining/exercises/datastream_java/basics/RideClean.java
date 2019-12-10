@@ -8,6 +8,7 @@ import org.apache.flink.api.java.utils.ParameterTool;
 import com.ververica.flinktraining.exercises.datastream_java.utils.ExerciseBase;
 import com.ververica.flinktraining.exercises.datastream_java.datatypes.TaxiRide;
 import com.ververica.flinktraining.exercises.datastream_java.sources.TaxiRideSource;
+import com.ververica.flinktraining.exercises.datastream_java.utils.MissingSolutionException;
 
 
 public class RideClean {
@@ -22,5 +23,14 @@ public class RideClean {
         // source
         DataStream<TaxiRide> taxiRide = env.addSource(ExerciseBase.rideSourceOrTest(
             new TaxiRideSource(input, maxEventDelay, servingSpeedFactor)));
+        DataStream<TaxiRide> taxiRideTrans = taxiRide.filter(new NYCFilter());
+        taxiRideTrans.print();
+        env.execute("start in NYC");
     }
+    private static class NYCFilter implements FilterFunction<TaxiRide>{
+        @Override
+        public boolean filter(TaxiRide taxiRide) throws Exception{
+            throw new MissingSolutionException();
+        }
+    {
 }
